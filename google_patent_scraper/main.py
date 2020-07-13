@@ -224,6 +224,13 @@ class scraper_class:
             except:
                 continue 
 
+        image_urls = []
+        images = soup.find_all('img', itemprop='thumbnail')
+        if images is not None:
+            for image in images:
+                image_urls.append(image.attrs['src'])
+
+
         # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
         #             Citations
         #
@@ -284,7 +291,8 @@ class scraper_class:
                 'forward_cite_yes_family':json.dumps(forward_cites_yes_family),
                 'backward_cite_no_family':json.dumps(backward_cites_no_family),
                 'backward_cite_yes_family':json.dumps(backward_cites_yes_family),
-                'abstract_text':abstract_text})
+                'abstract_text':abstract_text,
+                'image_urls': image_urls})
 
     def get_scraped_data(self,soup,patent,url):
         # ~~ Parse individual patent ~~ #
@@ -317,7 +325,3 @@ class scraper_class:
                     self.parsed_patents[patent] = self.get_scraped_data(soup,patent,url)
                 else:
                     self.parsed_patents[patent] = {}
-
-
-
-
